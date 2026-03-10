@@ -1,0 +1,2 @@
+plate,temp_t_fail_days,temp_event,temp_thr,hum_t_fail_days,hum_event,hum_thr,weibull_beta,weibull_eta,weibull_note
+Plate3,0.003863,1,3.866666666666667,21.0,0,29.7,2.0,21.00000035530402,"Weibull: beta assumed (=2.0), eta censored-MLE (uses humidity censored)."

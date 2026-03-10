@@ -1,0 +1,2 @@
+test_loss,test_acc_eval,accuracy,f1_macro,f1_weighted,log_loss,brier,recall_critical_test,fnr_critical_test,D_fixed_from_val,val_recall_critical,val_fnr_critical
+0.06552328169345856,0.9994999766349792,0.9995,0.9994999992187488,0.9994999992187487,0.00046632185988164913,6.225626983905694e-05,1.0,0.0,1,0.9999999999999968,3.219646771412954e-15
