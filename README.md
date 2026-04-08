@@ -1,98 +1,184 @@
-# AI-Agent (TransQ) for AI-Informed RCM of Runway Standing Water Sensors
+# A Measurement-Informed Framework for Reliability Evaluation and AI-Assisted Maintenance Planning of a Capacitive Runway Standing Water Sensor
 
-This repository provides an **executable AI-agent–orchestrated framework** for **reliability prediction** and **maintenance planning** of **runway Standing Water Detector (SWD)** capacitive sensors (Plate 1 and Plate 3).  
-The pipeline integrates:
+This repository provides an executable framework for **reliability evaluation** and **maintenance planning** of a capacitive **Standing Water Detector (SWD)** for runway applications using two sensing configurations: **Plate 1** and **Plate 3**.
 
-- **Accelerated Life Testing (ALT)** (temperature and humidity chambers),
-- **time-to-event extraction** from streaming Hz signals (Hz-drop + dwell rule),
-- **censoring-aware Weibull reliability baseline**,
-- **TransQ (Transformer–Quantum) degradation stage classifier**, and
-- **RCM/FMEA coupling** to produce **RPN/AP** and **risk-bounded inspection intervals**.
+The framework combines:
 
-> Core idea: the AI model is not used only for classification. The **critical-class probability** is treated as a condition-risk proxy, fused with Weibull horizon risk to generate **actionable RCM outputs**.
+- **Accelerated environmental exposure** under temperature and humidity chambers,
+- **frequency-based degradation monitoring** from streaming sensor signals,
+- **time-to-event extraction** using a reproducible Hz-drop-with-dwell rule,
+- **censoring-aware Weibull reliability modelling**,
+- **TransQ (Transformer + Quantum module) condition assessment**, and
+- **RCM/FMEA-based maintenance interpretation** to produce **RPN/AP outputs** and **risk-bounded inspection intervals**.
+
+> Core idea: the classifier is not used as a stand-alone maintenance decision maker.  
+> Its **critical-state probability** is treated as **complementary condition evidence** and is fused with the Weibull-based reliability estimate to support maintenance-oriented decision making.
 
 ---
 
 ## Highlights
 
-- **Executable end-to-end AI-agent**: Train → Evaluate → derive `D_fixed` from validation FNR → ALT extraction → Weibull fit → field alignment → RPN/AP → maintenance interval search.
-- **ALT-driven reliability**: converts chamber streaming into \((t_i, \varepsilon_i)\) tuples (failure vs right-censored).
-- **Field-aligned planning**: supports a **two-year field simulation** using survival-calibrated time scaling.
-- **Policy-aware scheduling**: inspection interval is computed to satisfy a target risk tolerance \(\alpha\) (e.g., 0.10 / 0.05 / 0.02 / 0.01).
-- **TransQ model**: hybrid **Transformer + Quantum feature branch** with gated fusion for degradation-stage recognition.
+- A capacitive runway standing-water sensor is evaluated under accelerated temperature and humidity exposure.  
+- A 10% frequency-drop rule with a dwell constraint converts streaming sensor signals into event/censor observations.  
+- A censoring-aware Weibull model estimates durability from sparse-failure sensor data.  
+- AI-assisted condition assessment is integrated with reliability evidence for FMEA/AP-based maintenance planning.  
+- A survival-calibrated field-alignment step reduces misleading direct comparisons between ALT time and field age.  
 
 ---
 
 ## Method Overview
 
 ### 1) Data Inputs
-- **Chamber ALT logs** (Excel):  
-  - Temperature test: 7 days  
-  - Humidity test: 21 days (often right-censored)
-- **Durability dataset** (`.mat`):  
-  - fixed-length vectors `durability` with length 951 (zero-padded)  
-  - optional `durability_len` for valid-length tracking  
-- **Plate configuration**: Plate 1 and Plate 3
+- **Accelerated chamber data**
+  - Temperature test: **7 days**
+  - Humidity test: **21 days**
+  - Sampling interval: **20 s**
+- **Durability sequences**
+  - fixed-length vectors of length **951**
+  - optional valid-length tracking
+- **Sensor configurations**
+  - **Plate 1**
+  - **Plate 3**
 
-### 2) ALT Failure-Time Extraction (Hz Drop)
-A failure event is detected when Hz drops below a threshold:
-- threshold = baseline × (1 − drop_pct)
-- baseline estimated from initial window
-- **dwell constraint** avoids transient-trigger failures
+### 2) Operational Failure Definition and Time-to-Event Extraction
+The SWD produces a continuous frequency output.  
+Operational failure is therefore defined from **signal degradation**, not complete hardware shutdown.
 
-Outputs:
-- `t_fail_days` and `event` (1 = failure, 0 = censored)
+A failure event is detected when:
 
-### 3) Reliability Baseline (Weibull with Censoring)
-Weibull time-to-event model is fit using censoring-aware likelihood.  
-With limited failures, \(\beta\) can be fixed conservatively (e.g., \(\beta = 2\)) and \(\eta\) estimated from mixed failure + censored evidence.
+- `frequency < baseline × (1 − drop_pct)`
+- `drop_pct = 0.10`
+- the threshold crossing persists for a predefined **dwell duration**
 
-### 4) TransQ Degradation Classifier
-TransQ is a 1D Transformer model with:
-- Patch embedding (Conv1D stride=patch)
-- Positional embedding
-- Transformer blocks
-- Quantum branch (AngleEmbedding + entangler layers; Pauli-Z expectations)
-- Gated fusion + Softmax classifier (5 classes)
+This step converts each chamber trajectory into:
 
-### 5) AI-Informed RCM (RPN/AP + Interval)
-We fuse Weibull horizon risk with AI critical-state probability using a Δt-aware multiplier:
+- `t_fail_days`
+- `event`  
+  - `1 = failure`
+  - `0 = right-censored`
+
+This provides reliability-ready observations of the form:
 
 \[
-p_{fail,fused} \approx (1+\gamma p_{critical}) \cdot p_{fail,base}(t,\Delta t)
+(t_i, \varepsilon_i)
 \]
-
-Then map to:
-- Occurrence \(O = f(p_{fail,fused})\)
-- Detection \(D = f(\text{FNR critical})\) (deployment uses `D_fixed` from validation)
-- RPN = \(S \times O \times D\)
-- AP mapping → maintenance action
-- interval search: max days such that \(p_{fail,fused} \le \alpha\)
 
 ---
 
-## Results (Latest)
+### 3) Reliability Baseline: Weibull Modelling with Censoring
+A two-parameter Weibull model is used to estimate the durability baseline from mixed **failure** and **right-censored** observations.
 
-### Classification (TransQ)
-On the test set, the classifier achieved near-ideal performance:
-- Accuracy: **1.0000**
-- Macro/Weighted F1: **1.0000**
-- Log loss: **0.0003**
-- Brier score: **0.000021**
-- Critical class (Failure Stage 2) recall: **1.0000** (FNR = 0.0)
+- Weibull shape: \(\beta\)
+- Weibull scale: \(\eta\)
 
-> Note: extremely high scores can indicate strong separability **or** correlated samples across splits.  
-> For stricter generalization, use **file-/device-level group splitting**.
+When observed failures are limited, \(\beta\) can be fixed conservatively (for example, \(\beta = 2\)) and \(\eta\) is estimated using a censoring-aware likelihood.
 
-### Reliability + AI-Informed RCM (2-year field simulation)
-- ALT extraction:
-  - Temperature: failure observed (event=1)
-  - Humidity: right-censored at 21 days (event=0)
-- Weibull baseline: \(\beta\) assumed, \(\eta\) estimated with censoring
-- For both Plate 1 and Plate 3 under current policy settings:
-  - Severity \(S=9\), Occurrence \(O=4\), Detection \(D=1\)
-  - **RPN = 36**, **AP4 (Monitor)**
-  - Recommended interval up to **180 days** for \(\alpha=0.10\) (search bound)
+This baseline is used for:
+
+- survival estimation,
+- horizon risk calculation,
+- maintenance-oriented planning.
+
+---
+
+### 4) AI-Assisted Condition Assessment (TransQ)
+TransQ is a hybrid 1D sequence model for degradation-stage recognition.
+
+Main components:
+- Conv1D patch embedding
+- positional embedding
+- Transformer blocks
+- quantum feature branch
+- gated fusion
+- softmax classifier
+
+The model outputs degradation-stage probabilities, including the probability of the **critical state**, which is used as complementary evidence in the maintenance decision layer.
+
+---
+
+### 5) Reliability–Condition Fusion for RCM/FMEA
+The framework combines:
+
+- Weibull-based horizon risk, and
+- AI-based critical-state probability
+
+using a \(\Delta t\)-aware hazard adjustment:
+
+\[
+p_{\text{fail,fused}} \approx (1+\gamma p_{\text{critical}})\, p_{\text{fail,base}}(t,\Delta t)
+\]
+
+These fused outputs are mapped into:
+
+- **Occurrence** \(O\)
+- **Detection** \(D\)
+- **RPN** \(= S \times O \times D\)
+- **Action Priority (AP)**
+
+The framework then recommends a planning action such as:
+
+- monitor
+- inspect
+- repair
+- replace
+
+depending on the selected risk policy.
+
+---
+
+### 6) Risk-Based Inspection Interval
+The inspection interval is determined by solving for the maximum interval that satisfies:
+
+\[
+p_{\text{fail,fused}} \le \alpha
+\]
+
+where \(\alpha\) is the allowable probability of failure before inspection.
+
+This makes the scheduling step explicitly **policy-dependent** and compatible with different operational risk tolerances.
+
+---
+
+### 7) Survival-Calibrated Field Planning
+Direct comparison between accelerated-test time and field age can be misleading.  
+To address this, the framework includes a **survival-calibrated field-alignment step** that maps field age into an ALT-equivalent planning scenario.
+
+This step is intended as a **planning bridge**, not as a physics-based equivalence model.
+
+---
+
+## Results Summary
+
+### Condition Assessment
+The TransQ classifier showed very strong discrimination across the predefined degradation stages on the evaluated dataset.
+
+In this framework, the classifier is used as:
+- a **condition-assessment module**
+- a source of **critical-state probability**
+- **not** a stand-alone maintenance predictor
+
+> Because the dataset includes augmented durability patterns, stricter validation using file-level, run-level, or device-level grouping is recommended for stronger generalization claims.
+
+### Reliability and Maintenance Planning
+Using the extracted event/censor observations:
+
+- Temperature exposure produced failure events
+- Humidity exposure remained right-censored within the observation window
+- A censoring-aware Weibull baseline was estimated for both sensor configurations
+
+Under the selected policy settings:
+
+- **Severity** \(S = 9\)
+- **Occurrence** \(O = 4\)
+- **Detection** \(D = 1\)
+- **RPN = 36**
+- **AP4 (Monitor)**
+
+For both Plate 1 and Plate 3, the recommended inspection interval reached:
+
+- **up to 180 days** for \(\alpha = 0.10\)
+
+These outputs should be interpreted as **planning-oriented results under the selected modelling and policy assumptions**, rather than universal maintenance prescriptions.
 
 ---
 
