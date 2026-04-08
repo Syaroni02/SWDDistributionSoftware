@@ -66,8 +66,8 @@ $$\[(t_i, \varepsilon_i)\]$$
 ### 3) Reliability Baseline: Weibull Modelling with Censoring
 A two-parameter Weibull model is used to estimate the durability baseline from mixed **failure** and **right-censored** observations.
 
-- Weibull shape: \(`\beta\`)
-- Weibull scale: \(`\eta\`)
+- Weibull shape: $\(\beta\)$
+- Weibull scale: $\(\eta\)$
 
 When observed failures are limited, \(\beta\) can be fixed conservatively (for example, \(\beta = 2\)) and \(\eta\) is estimated using a censoring-aware likelihood.
 
