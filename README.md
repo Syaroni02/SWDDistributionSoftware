@@ -69,7 +69,7 @@ A two-parameter Weibull model is used to estimate the durability baseline from m
 - Weibull shape: $\(\beta\)$
 - Weibull scale: $\(\eta\)$
 
-When observed failures are limited, \(\beta\) can be fixed conservatively (for example, \(\beta = 2\)) and \(\eta\) is estimated using a censoring-aware likelihood.
+When observed failures are limited, $\(\beta\)$ can be fixed conservatively (for example, $\(\beta = 2\))$ and $\(\eta\)$ is estimated using a censoring-aware likelihood.
 
 This baseline is used for:
 
@@ -100,17 +100,15 @@ The framework combines:
 - Weibull-based horizon risk, and
 - AI-based critical-state probability
 
-using a \(\Delta t\)-aware hazard adjustment:
+using a $\(\Delta t\)$-aware hazard adjustment:
 
-\[
-p_{\text{fail,fused}} \approx (1+\gamma p_{\text{critical}})\, p_{\text{fail,base}}(t,\Delta t)
-\]
+$\[p_{\text{fail,fused}} \approx (1+\gamma p_{\text{critical}})\, p_{\text{fail,base}}(t,\Delta t)\]$
 
 These fused outputs are mapped into:
 
-- **Occurrence** \(O\)
-- **Detection** \(D\)
-- **RPN** \(= S \times O \times D\)
+- **Occurrence** $\(O\)$
+- **Detection** $\(D\)$
+- **RPN** $\(= S \times O \times D\)$
 - **Action Priority (AP)**
 
 The framework then recommends a planning action such as:
@@ -127,11 +125,9 @@ depending on the selected risk policy.
 ### 6) Risk-Based Inspection Interval
 The inspection interval is determined by solving for the maximum interval that satisfies:
 
-\[
-p_{\text{fail,fused}} \le \alpha
-\]
+$\[p_{\text{fail,fused}} \le \alpha\]$
 
-where \(\alpha\) is the allowable probability of failure before inspection.
+where $\(\alpha\)$ is the allowable probability of failure before inspection.
 
 This makes the scheduling step explicitly **policy-dependent** and compatible with different operational risk tolerances.
 
@@ -166,15 +162,15 @@ Using the extracted event/censor observations:
 
 Under the selected policy settings:
 
-- **Severity** \(S = 9\)
-- **Occurrence** \(O = 4\)
-- **Detection** \(D = 1\)
+- **Severity** $\(S = 9\)$
+- **Occurrence** $\(O = 4\)$
+- **Detection** $\(D = 1\)$
 - **RPN = 36**
 - **AP4 (Monitor)**
 
 For both Plate 1 and Plate 3, the recommended inspection interval reached:
 
-- **up to 180 days** for \(\alpha = 0.10\)
+- **up to 180 days** for $\(\alpha = 0.10\)$
 
 These outputs should be interpreted as **planning-oriented results under the selected modelling and policy assumptions**, rather than universal maintenance prescriptions.
 
