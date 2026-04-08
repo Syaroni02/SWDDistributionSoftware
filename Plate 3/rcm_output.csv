@@ -1,0 +1,2 @@
+plate,failure_mode,S,O,D,RPN,AP,action,interval_days,p_fail_base,p_critical,p_fail_fused
+Plate3,Runway standing water sensor degradation (Plate3),9,4,1,36,AP4-Monitor,Monitor,180,0.007918893989443274,0.2000003159046173,0.011086456588450934
