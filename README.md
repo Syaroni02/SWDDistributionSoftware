@@ -59,7 +59,7 @@ This step converts each chamber trajectory into:
 
 This provides reliability-ready observations of the form:
 
-`\[(t_i, \varepsilon_i)\]`
+$$\[(t_i, \varepsilon_i)\]$$
 
 ---
 
