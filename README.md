@@ -1,4 +1,4 @@
-# A Measurement-Informed Framework for Reliability Evaluation and AI-Assisted Maintenance Planning of a Capacitive Runway Standing Water Sensor
+# A Capacitive Runway Standing-Water Sensor: Accelerated Environmental Evaluation, Frequency-Based Failure Definition, and Reliability-Supported Maintenance Interpretation
 
 This repository provides an executable framework for **reliability evaluation** and **maintenance planning** of a capacitive **Standing Water Detector (SWD)** for runway applications using two sensing configurations: **Plate 1** and **Plate 3**.
 
@@ -18,11 +18,12 @@ The framework combines:
 
 ## Highlights
 
-- A capacitive runway standing-water sensor is evaluated under accelerated temperature and humidity exposure.  
-- A 10% frequency-drop rule with a dwell constraint converts streaming sensor signals into event/censor observations.  
-- A censoring-aware Weibull model estimates durability from sparse-failure sensor data.  
-- AI-assisted condition assessment is integrated with reliability evidence for FMEA/AP-based maintenance planning.  
-- A survival-calibrated field-alignment step reduces misleading direct comparisons between ALT time and field age.  
+1.	A capacitive runway standing-water sensor was assessed under accelerated environmental exposure.
+2.	Streaming frequency signals were converted into event and censoring data using a 10% drop rule with dwell time.
+3.	Durability was estimated from sparse-failure observations using a censoring-aware Weibull model.
+4.	AI-assisted degradation assessment was integrated with reliability evidence for maintenance-oriented FMEA/AP interpretation.
+5.	A field-alignment strategy was applied to reduce misleading ALT-to-field time comparisons.
+
 
 ---
 
