@@ -1,4 +1,4 @@
-# A Capacitive Runway Standing-Water Sensor: Accelerated Environmental Evaluation, Frequency-Based Failure Definition, and Reliability-Supported Maintenance Interpretation
+# Reliability Evaluation and Maintenance Planning of a Capacitive Runway Standing-Water Detector under Accelerated Environmental Exposure
 
 This repository provides an executable framework for **reliability evaluation** and **maintenance planning** of a capacitive **Standing Water Detector (SWD)** for runway applications using two sensing configurations: **Plate 1** and **Plate 3**.
 
