@@ -103,32 +103,32 @@ The framework combines:
 
 The Weibull model provides the baseline probability of failure over the selected planning horizon:
 
-\[
+$\[
 p_{\mathrm{fail,base}}
-\]
+\]$
 
 The AI-derived critical-state probability is used to inflate the baseline failure risk through the multiplier
 
-\[
+$\[
 m = 1 + \gamma p_{\mathrm{critical}},
-\]
+\]$
 
 where \(p_{\mathrm{critical}}\) is the probability of the critical degradation state and \(\gamma\) is the hazard-inflation coefficient.
 
 The fused probability of failure is then calculated as
 
-\[
+$\[
 p_{\mathrm{fail,fused}}
 =
 \min \left[
 1,\;
 m\,p_{\mathrm{fail,base}}
 \right].
-\]
+\]$
 
 Equivalently,
 
-\[
+$\[
 p_{\mathrm{fail,fused}}
 =
 \min \left[
@@ -136,7 +136,7 @@ p_{\mathrm{fail,fused}}
 \left(1+\gamma p_{\mathrm{critical}}\right)
 p_{\mathrm{fail,base}}
 \right].
-\]
+\]$
 
 This formulation treats the AI-derived critical-state probability as a multiplicative risk-inflation factor applied to the Weibull baseline probability. The upper bound of 1 ensures that the resulting probability remains within the valid probability range.
 
