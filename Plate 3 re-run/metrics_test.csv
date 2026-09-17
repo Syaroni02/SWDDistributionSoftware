@@ -1,0 +1,2 @@
+test_loss,test_acc_eval,mse,rmse,mae,accuracy,f1_macro,f1_weighted,log_loss,brier,recall_critical_test,fnr_critical_test,D_fixed_from_val,val_recall_critical,val_fnr_critical
+0.06237226724624634,1.0,3.7070977484070756e-07,0.0006088594048224167,1.5505413333554918e-05,1.0,1.0,1.0,3.943188943312258e-05,3.7070977484070756e-07,1.0,0.0,1,0.9999999999999968,3.219646771412954e-15
