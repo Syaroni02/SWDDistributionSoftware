@@ -117,9 +117,7 @@ where \(p_{\mathrm{critical}}\) is the probability of the critical degradation s
 
 The fused probability of failure is then calculated as
 
-$\[
-p_{\mathrm{fail,fused}}
-=
+$\[p_{\mathrm{fail,fused}}=
 \min \left[
 1,\;
 m\,p_{\mathrm{fail,base}}
@@ -128,9 +126,7 @@ m\,p_{\mathrm{fail,base}}
 
 Equivalently,
 
-$\[
-p_{\mathrm{fail,fused}}
-=
+$\[p_{\mathrm{fail,fused}}=
 \min \left[
 1,\;
 \left(1+\gamma p_{\mathrm{critical}}\right)
