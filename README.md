@@ -113,7 +113,7 @@ $\[
 m = 1 + \gamma p_{\mathrm{critical}},
 \]$
 
-where \(p_{\mathrm{critical}}\) is the probability of the critical degradation state and \(\gamma\) is the hazard-inflation coefficient.
+where $\(p_{\mathrm{critical}}\)$ is the probability of the critical degradation state and $\(\gamma\)$ is the hazard-inflation coefficient.
 
 The fused probability of failure is then calculated as
 
